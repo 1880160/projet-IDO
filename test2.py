@@ -1,9 +1,12 @@
-
+#source :https://randomnerdtutorials.com/raspberry-pi-dht11-dht22-python/
+import pigpio
 import time
 import adafruit_dht
 import board
 
 # Initialize sensor connected to GPIO 4
+pi = pigpio.pi()
+pi.set_mode(17,pigpio.INPUT)
 sensor = adafruit_dht.DHT11(17)
 
 while True:
