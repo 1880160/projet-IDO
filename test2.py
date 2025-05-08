@@ -1,4 +1,4 @@
-
+#source :https://randomnerdtutorials.com/raspberry-pi-dht11-dht22-python/
 import time
 import adafruit_dht
 import board
