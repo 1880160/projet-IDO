@@ -1,0 +1,5 @@
+
+# Ignore editor-specific files
+bin/
+include/
+lib/

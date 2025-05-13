@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 import time
 import LA_DHT as DHT
-DHTPin = 11     #define the pin of DHT11
+DHTPin = 17     #define the pin of DHT11
 
 def loop():
     dht = DHT.DHT(DHTPin)   #create a DHT class object
