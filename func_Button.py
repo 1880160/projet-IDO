@@ -1,3 +1,4 @@
+# faite par Rodney
 import pigpio
 
 BUTTON = 2

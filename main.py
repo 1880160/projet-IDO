@@ -1,3 +1,5 @@
+# faite par Rodney
+
 import pigpio
 import paho.mqtt.client as pmc
 import time
