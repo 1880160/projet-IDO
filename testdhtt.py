@@ -23,6 +23,6 @@ try:
 			print(f"Temp: {temp}°C, Humid: {hum}%")
 			break
 		time.sleep(2)
-finally :
+except KeyboardInterrupt as e:
 	dhttSensor.close()
 	pi.stop()

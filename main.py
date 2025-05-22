@@ -6,6 +6,7 @@ import time
 from dhtt import DHT11
 from flask import Flask, jsonify, request
 pi = pigpio.pi
+import threading
 
 
 # -----------------CONSTANCE----------------------
@@ -32,9 +33,19 @@ TOPIC_HUM = 0
 # valeur a cree avec REST
 def controleLedBlanche():
     while True:
-        if envoieDonnees:
+        if envoieDonnees: # nom fonction qui va e
             # Allumer LED BLANCHE
             print("LED BLANCHE ALLUMER")
         else:
             # Eteindre LED BLANCHE
             print("LED BLANCHE ETEINDRE")
+            
+# Declaration threads
+thread_l =ledBlanche = threading.Thread(target=controleLedBlanche, daemon=True)
+
+
+while True:
+    
+    thread_l.start()
+
+            

@@ -22,7 +22,7 @@ try:
             if "etat" in json:
                 if json["etat"] == 0:
 # 0 désactive l’envoi de données, 1 active l’envoi de données
-# flag
+# flag           
                     return 1
 
 
