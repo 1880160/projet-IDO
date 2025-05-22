@@ -9,10 +9,10 @@ from dhtt import DHT11
 BROKER = "mqttbroker.lan"
 PORT = 1883
 HOTE = "pi"
-TOPIC_T = f"test/{HOTE}/T"
-TOPICRCP_T = "test/+/T"
-TOPIC_H = f"test/{HOTE}/H"
-TOPICRCP_H = "test/+/H"
+TOPIC_T = f"final/{HOTE}/T"
+TOPICRCP_T = "final/+/T"
+TOPIC_H = f"final/{HOTE}/H"
+TOPICRCP_H = "final/+/H"
 
 
 DHTT = 17
@@ -58,9 +58,9 @@ def publication_msg(sensor):
 client = pmc.Client(pmc.CallbackAPIVersion.VERSION2)
 client.on_connect = connexion
 client.connect(BROKER,PORT)
-client.on_message = on_message
 client.subscribe(TOPICRCP_T)
 client.subscribe(TOPICRCP_H)
+client.on_message = on_message
 client.loop_start()
 
 
@@ -71,12 +71,13 @@ try:
         publication_msg(dhttSensor)
         client.publish(TOPIC_T,temp)
         client.publish(TOPIC_H,hum)
-        
         print(f" < Temp: {temp}°C | Hum: {hum}%")
         if tempRecv is not None and int(tempRecv) < temp:
             print("My temp is higher")
         elif humRecv is not None and int(humRecv) < hum:
             print("My humidity is higher")
+        else :
+            print("Theirs is higher")
         time.sleep(3)
         
         
