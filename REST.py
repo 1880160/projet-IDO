@@ -23,6 +23,7 @@ try:
                 if json["etat"] == 0:
 # 0 désactive l’envoi de données, 1 active l’envoi de données
 # flag           
+
                     return 1
 
 
@@ -43,5 +44,5 @@ try:
         app.run(host='0.0.0.0',port=3000)
 
 
-except KeyboardInterrupt:
-    print("terminer")
+    except KeyboardInterrupt:
+        print("terminer")

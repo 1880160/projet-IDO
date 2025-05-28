@@ -1,25 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#- Par Maindy
+#- Source DHTT: https://github.com/joan2937/pigpio/blob/master/EXAMPLES/Python/DHT11_SENSOR/dht11.py
+
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
 import pigpio
 
-
+#-> Classe appelée pour recevoir les données du senseur
 class DHT11(object):
-    """
-    The DHT11 class is a stripped version of the DHT22 sensor code by joan2937.
-    You can find the initial implementation here:
-    - https://github.com/srounet/pigpio/tree/master/EXAMPLES/Python/DHT22_AM2302_SENSOR
-
-    example code:
-    >>> pi = pigpio.pi()
-    >>> sensor = DHT11(pi, 4) # 4 is the data GPIO pin connected to your sensor
-    >>> for response in sensor:
-    ....    print("Temperature: {}".format(response['temperature']))
-    ....    print("Humidity: {}".format(response['humidity']))
-    """
 
     def __init__(self, pi, gpio):
         """

@@ -1,0 +1,143 @@
+
+import paho.mqtt.client as pmc
+import pigpio
+import time
+from dhtt import DHT11 
+
+# Source : https://cedalo.com/blog/configuring-paho-mqtt-python-client-with-examples/#Subscribe_to_topics_with_the_Paho_MQTT_client
+#- Maindy Goue
+
+
+# -­> Initialisation des varaibles de MQTT
+
+BROKER = "mqttbroker.lan"
+PORT = 1883
+HOTE = "pirm"
+TOPIC_T = f"final/{HOTE}/T"
+TOPICRCP_T = "final/+/T"
+TOPIC_H = f"final/{HOTE}/H"
+TOPICRCP_H = "final/+/H"
+
+# -­> Initialisation des pins du rasberry pi
+DHTT = 17
+R,G,B = 16,20,21
+BUTTON = 2
+
+
+# -­> Initialisation (vide) des varibles recues et envoyés
+temp = None
+hum = None
+tempRecu = None
+humRecu = None
+pi = pigpio.pi()
+dhttSensor = DHT11(pi,DHTT)
+pi.set_mode(R,pigpio.OUTPUT)
+pi.set_mode(G,pigpio.OUTPUT)
+pi.set_mode(B,pigpio.OUTPUT)
+pi.set_mode(BUTTON,pigpio.INPUT)
+
+
+# -> Connection MQTT
+def connexion(client, userdata, flags, code, properties):
+    if code == 0:
+        print("Connecté")
+    else:
+        print("Erreur code %d\n", code)
+
+
+# -> Formule de reception de message
+def on_message(client, userdata, message, properties=None):
+
+    # Variables à remplir
+    global tempRecu, humRecu
+
+    # Stockage et decodage du message recu
+    data = message.payload.decode()
+
+    # Stockage de la provenance du message (soit du T pour temperature ou du H pour humidité)
+    currentTopic = message.topic
+ 
+    
+    # Si la valeur provient du topic T, je stocke la variable dans tempRecu et je l'Affiche
+    if "/T" in currentTopic:
+        tempRecu = data
+        print(f" Recu > Temp: {data}°C")
+
+    # Si la valeur provient du topic H, je stocke la variable dans humRecu et je l'Affiche
+    elif "/H" in currentTopic:
+        humRecu = data
+        print(f" Recu > Hum: {data}%")
+
+   
+  
+
+# -> Stockage des valeurs que j'ai
+def publication_msg(sensor):
+
+    # Variables à remplir
+    global temp, hum
+
+    # Stockage des valeurs ressenties
+    data = next(sensor)
+    temp = data['temperature']
+    hum = data['humidity']
+    
+    
+
+# -> Configuration mqtt (connexion, subscription aux topics et debut du loop)
+client = pmc.Client(pmc.CallbackAPIVersion.VERSION2)
+client.on_connect = connexion
+client.connect(BROKER,PORT)
+client.subscribe(TOPICRCP_T)
+client.subscribe(TOPICRCP_H)
+client.on_message = on_message
+client.loop_start()
+
+
+
+
+try:
+    while True:
+            #Appel de la fonction et appelle du senseur branché au pi 
+            publication_msg(dhttSensor)
+            #Publier la temperature au topic de temperature
+            client.publish(TOPIC_T,temp)
+            #Publier l'humidité au topic d'humidité
+            client.publish(TOPIC_H,hum)
+            #Affichage de mes valeurs 
+            print(f" Envoyé < Temp: {temp}°C | Hum: {hum}%")
+            
+            #Si la temperature recue n'est pas nulle et elle n'est pas plus haute que la mienne,
+            if tempRecu is not None and int(tempRecu) < temp:
+                # Affichage un message et allume la lumiere rouge
+                print("Ma temperature est plus haute")
+                pi.write(R,0)
+                pi.write(G,1)
+                pi.write(B,1)
+                time.sleep(1)
+
+            #Si l'humidité recue n'est pas nulle et elle n'est pas plus haute que la mienne,
+            elif humRecu is not None and int(humRecu) < hum:
+                # Affichage un message et allume la lumiere blue
+                print("Mon humidité est plus haute")
+                pi.write(R,1)
+                pi.write(G,1)
+                pi.write(B,0)
+                time.sleep(1)
+            #Si aucune de mes valeurs sont plus élévées j'allume une lumiere verte 
+            else :
+                print("Leurs valeurs sont plus haute")
+                pi.write(R,1)
+                pi.write(G,0)
+                pi.write(B,1)
+                time.sleep(1)
+        if pi.read(2) == 0
+            time.sleep(30)
+        
+# -> Fermeture de tout les services
+except KeyboardInterrupt as e:
+        dhttSensor.close()
+        pi.stop()
+        client.loop_stop()
+        client.disconnect()
+        print(f"Bye {e}")
