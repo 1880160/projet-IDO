@@ -151,7 +151,7 @@ while True:
             pi.write(G,0)
             pi.write(B,1)
             time.sleep(1)
-        time.sleep(3)
+        time.sleep(30)
             
     
 
