@@ -8,7 +8,7 @@ import threading
 
 # Source : https://cedalo.com/blog/configuring-paho-mqtt-python-client-with-examples/#Subscribe_to_topics_with_the_Paho_MQTT_client
 #- Maindy Goue et Rodney 
-# voir autre fichier pour voir qui a fait quoi | MQTT, DHTT : Maindy | Bouton et REST : Rodney 
+# voir autre fichier pour voir qui a fait quoi | MQTT et LED, DHTT : Maindy | Bouton et REST : Rodney 
 
 
 # -­> Initialisation des varaibles de MQTT
@@ -153,7 +153,7 @@ while True:
             time.sleep(1)
         time.sleep(3)
             
-    # -> Fermeture de tout les services
+    
 
 
         # app = Flask(__name__)
@@ -192,7 +192,7 @@ while True:
 
         # if __name__ == '__main__':
         #     app.run(host='0.0.0.0',port=3000)
-
+# -> Fermeture de tout les services
     except KeyboardInterrupt as e:
             dhttSensor.close()
             pi.stop()
