@@ -7,7 +7,8 @@ from flask import Flask, jsonify, request
 import threading
 
 # Source : https://cedalo.com/blog/configuring-paho-mqtt-python-client-with-examples/#Subscribe_to_topics_with_the_Paho_MQTT_client
-#- Maindy Goue
+#- Maindy Goue et Rodney 
+# voir autre fichier pour voir qui a fait quoi
 
 
 # -­> Initialisation des varaibles de MQTT
