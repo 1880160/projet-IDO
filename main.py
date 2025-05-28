@@ -8,7 +8,7 @@ import threading
 
 # Source : https://cedalo.com/blog/configuring-paho-mqtt-python-client-with-examples/#Subscribe_to_topics_with_the_Paho_MQTT_client
 #- Maindy Goue et Rodney 
-# voir autre fichier pour voir qui a fait quoi
+# voir autre fichier pour voir qui a fait quoi | MQTT, DHTT : Maindy | Bouton et REST : Rodney 
 
 
 # -­> Initialisation des varaibles de MQTT
@@ -38,7 +38,7 @@ pi.set_mode(B,pigpio.OUTPUT)
 envoiDonnees = True
 
 
-# -> Connection MQTT
+# -> Connection MQTT [MG]
 def connexion(client, userdata, flags, code, properties):
     if code == 0:
         print("Connecté")
@@ -46,7 +46,7 @@ def connexion(client, userdata, flags, code, properties):
         print("Erreur code %d\n", code)
 
 
-# -> Formule de reception de message
+# -> Formule de reception de message [MG]
 def on_message(client, userdata, message, properties=None):
 
     # Variables à remplir
@@ -72,7 +72,7 @@ def on_message(client, userdata, message, properties=None):
 
 
 
-# -> Stockage des valeurs que j'ai
+# -> Stockage des valeurs que j'ai [MG]
 def publication_msg(sensor):
 
     # Variables à remplir
@@ -85,7 +85,7 @@ def publication_msg(sensor):
     
     
 
-# -> Configuration mqtt (connexion, subscription aux topics et debut du loop)
+# -> Configuration mqtt (connexion, subscription aux topics et debut du loop) [MG]
 client = pmc.Client(pmc.CallbackAPIVersion.VERSION2)
 client.on_connect = connexion
 client.connect(BROKER,PORT)
@@ -109,6 +109,7 @@ def controleLedBlanche():
 
 thread_l =ledBlanche = threading.Thread(target=controleLedBlanche, daemon=True)
 thread_l.start()
+
 while True:
 
     
